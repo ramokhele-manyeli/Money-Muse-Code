@@ -1,0 +1,6 @@
+@Money_Muse_Backend_HostAddress = http://localhost:5084
+
+GET {{Money_Muse_Backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
