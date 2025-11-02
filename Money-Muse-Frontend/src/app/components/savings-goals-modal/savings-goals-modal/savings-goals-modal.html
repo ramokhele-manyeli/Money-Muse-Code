@@ -1,0 +1,50 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Create New Savings Goal</h2>
+      <button class="close-button" (click)="closeModal()">
+        <lucide-icon [name]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form (ngSubmit)="onSave()" #goalForm="ngForm">
+        <div class="form-group">
+          <label class="form-label">Icon</label>
+          <div class="icon-grid">
+            <button type="button" class="icon-option" *ngFor="let icon of availableIcons" (click)="selectIcon(icon)" [class.selected]="newGoal.icon === icon">
+              {{ icon }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="title" class="form-label">Goal Title</label>
+          <input id="title" name="title" [(ngModel)]="newGoal.title" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="target" class="form-label">Target Amount ($)</label>
+          <input id="target" name="targetAmount" type="number" [(ngModel)]="newGoal.targetAmount" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="deadline" class="form-label">Deadline</label>
+          <input id="deadline" name="deadline" type="date" [(ngModel)]="newGoal.deadline" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Progress Color</label>
+          <div class="color-grid">
+            <button *ngFor="let color of availableColors" type="button" class="color-option" [style.backgroundColor]="color" [class.selected]="newGoal.color === color" (click)="selectColor(color)"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="cancel-button" (click)="closeModal()">Cancel</button>
+      <button type="button" class="save-button" (click)="onSave()"><lucide-icon [name]="Check" [size]="14"></lucide-icon> Create Goal</button>
+    </div>
+  </div>
+</div>

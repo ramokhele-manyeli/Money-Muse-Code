@@ -1,0 +1,81 @@
+<div class="data-management-layout">
+  <!-- Navbar -->
+  <app-navbar 
+    [isOpen]="isMobileMenuOpen"
+    [currentRoute]="currentRoute"
+    (toggleMenu)="onToggleMobileMenu()"
+    (closeMenu)="onCloseMobileMenu()"
+    (navigateToRoute)="onNavigate($event)">
+  </app-navbar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <!-- Header -->
+      <div class="page-header">
+        <h1 class="page-title">Data Management</h1>
+        <p class="page-subtitle">Manage your data and account settings</p>
+      </div>
+
+      <!-- Data Management Card -->
+      <div class="data-management-card">
+        <h2 class="section-title">Data Management</h2>
+        
+        <div class="data-sections">
+          <!-- Export Data Section -->
+          <div class="data-section export-section">
+            <div class="section-content">
+              <div class="icon-container export-icon">
+                <lucide-icon [name]="Download" [size]="24" class="section-icon"></lucide-icon>
+              </div>
+              <div class="content-body">
+                <h3 class="section-heading">Export Your Data</h3>
+                <p class="section-description">
+                  Download a copy of all your financial data including transactions, budgets, and goals. 
+                  The export will be provided in CSV and JSON formats for your convenience.
+                </p>
+                <button class="export-btn" (click)="onExportData()">
+                  <lucide-icon [name]="Download" [size]="16" class="button-icon"></lucide-icon>
+                  Export All Data
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delete Account Section -->
+          <div class="data-section delete-section">
+            <div class="section-content">
+              <div class="icon-container delete-icon">
+                <lucide-icon [name]="AlertTriangle" [size]="24" class="section-icon"></lucide-icon>
+              </div>
+              <div class="content-body">
+                <h3 class="section-heading">Delete Account</h3>
+                <p class="section-description">
+                  Permanently delete your account and all associated data. This action cannot be undone. 
+                  All your transactions, budgets, goals, and settings will be permanently removed.
+                </p>
+                <button class="delete-btn" (click)="onShowDeleteModal()">
+                  <lucide-icon [name]="Trash2" [size]="16" class="button-icon"></lucide-icon>
+                  Delete My Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delete Account Modal -->
+  <app-delete-modal
+    [isOpen]="showDeleteModal"
+    [item]="accountItem"
+    [title]="'Delete Account'"
+    [message]="'Are you absolutely sure you want to delete your account? This will permanently remove all your financial data, including transactions, budgets, and goals from our servers.'"
+    [confirmText]="'Yes, Delete My Account'"
+    [cancelText]="'Cancel'"
+    [isLoading]="isDeleting"
+    (closeModal)="onCloseDeleteModal()"
+    (confirmDelete)="onConfirmDeleteAccount($event)">
+  </app-delete-modal>
+</div>

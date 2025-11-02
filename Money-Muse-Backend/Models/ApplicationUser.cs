@@ -42,5 +42,11 @@ namespace Money_Muse_Backend.Models
         public MoneyPersonalityType MoneyPersonalityType { get; set; } = MoneyPersonalityType.NotSet;
 
         public DateTime? LastLoginAt { get; set; }
+        
+        [MaxLength(500)]
+        public string? Bio { get; set; }
+
+        [MaxLength(2048)]
+        public string? ProfilePictureUrl { get; set; }
     }
 }

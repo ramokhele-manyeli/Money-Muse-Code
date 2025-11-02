@@ -1,0 +1,104 @@
+<div class="user-profile-layout">
+  <!-- Navbar -->
+  <app-navbar 
+    [isOpen]="isMobileMenuOpen"
+    [currentRoute]="currentRoute"
+    (toggleMenu)="onToggleMobileMenu()"
+    (closeMenu)="onCloseMobileMenu()"
+    (navigateToRoute)="onNavigate($event)">
+  </app-navbar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <!-- Header -->
+      <div class="page-header">
+        <h1 class="page-title">Profile</h1>
+        <p class="page-subtitle">Manage your account information</p>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <h2 class="section-title">Profile Settings</h2>
+        
+        <div class="profile-sections">
+          <!-- Avatar Upload Section -->
+          <div class="avatar-section">
+            <div class="avatar-container">
+              <div class="avatar-wrapper">
+                <div *ngIf="hasAvatar" class="avatar-image">
+                  <img [src]="displayAvatar" [alt]="profile.name" class="user-avatar">
+                </div>
+                <div *ngIf="!hasAvatar" class="avatar-placeholder">
+                  <lucide-icon [name]="User" [size]="32" class="placeholder-icon"></lucide-icon>
+                </div>
+                <div class="avatar-initials">
+                  {{ profile.initials }}
+                </div>
+              </div>
+            </div>
+            <div class="avatar-controls">
+              <h3 class="control-label">Profile Picture</h3>
+              <div class="upload-buttons">
+                <button class="upload-btn" (click)="onUploadPhoto()">
+                  <lucide-icon [name]="Upload" [size]="16" class="button-icon"></lucide-icon>
+                  Upload Photo
+                </button>
+                <button class="camera-btn" (click)="onTakePhoto()">
+                  <lucide-icon [name]="Camera" [size]="16" class="button-icon"></lucide-icon>
+                  Take Photo
+                </button>
+              </div>
+              <p class="upload-hint">
+                JPG, PNG or GIF. Max size 2MB.
+              </p>
+            </div>
+          </div>
+
+          <!-- Profile Form -->
+          <div class="profile-form">
+            <!-- Name Field -->
+            <div class="form-group">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input
+                id="fullName"
+                type="text"
+                [(ngModel)]="profile.name"
+                (input)="onNameChange()"
+                placeholder="Enter your full name"
+                class="form-input"
+              />
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input
+                id="email"
+                type="email"
+                [(ngModel)]="profile.email"
+                (input)="onEmailChange()"
+                placeholder="Enter your email address"
+                class="form-input"
+              />
+              <p class="field-hint">
+                We'll send verification to your new email address.
+              </p>
+            </div>
+
+            <!-- Save Button -->
+            <div class="form-actions">
+              <button 
+                class="save-btn"
+                [disabled]="!isFormDirty"
+                [class.disabled]="!isFormDirty"
+                (click)="onSaveChanges()">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

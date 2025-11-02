@@ -1,0 +1,60 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-content">
+        <div class="icon-container">
+          <lucide-icon [name]="AlertTriangle" [size]="24" class="warning-icon"></lucide-icon>
+        </div>
+        <h2 class="modal-title">{{ title }}</h2>
+      </div>
+      <button class="close-button" (click)="onClose()" [disabled]="isLoading">
+        <lucide-icon [name]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="modal-body">
+      <div class="message-container">
+        <p class="message-text">{{ message }}</p>
+        
+        <div *ngIf="item" class="item-info">
+          <div class="item-details">
+            <p class="item-name">{{ item.name }}</p>
+            <p *ngIf="item.type" class="item-type">{{ item.type }}</p>
+          </div>
+        </div>
+
+        <div class="warning-notice">
+          <lucide-icon [name]="AlertTriangle" [size]="16" class="notice-icon"></lucide-icon>
+          <span class="notice-text">This action cannot be undone.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button 
+        type="button" 
+        class="cancel-button" 
+        (click)="onClose()"
+        [disabled]="isLoading">
+        {{ cancelText }}
+      </button>
+      <button
+        type="button"
+        class="delete-button"
+        [disabled]="isLoading"
+        (click)="onConfirm()">
+        <lucide-icon 
+          *ngIf="!isLoading" 
+          [name]="Trash2" 
+          [size]="16" 
+          class="button-icon">
+        </lucide-icon>
+        <span class="loading-spinner" *ngIf="isLoading"></span>
+        {{ isLoading ? 'Deleting...' : confirmText }}
+      </button>
+    </div>
+  </div>
+</div>

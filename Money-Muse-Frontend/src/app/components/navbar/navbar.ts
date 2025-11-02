@@ -11,7 +11,11 @@ import {
   Settings, 
   LogOut,
   Menu,
-  X
+  X,
+  Database,
+  Shield,
+  UserPen,
+  Goal
 } from 'lucide-angular';
 
 export interface NavItem {
@@ -38,6 +42,10 @@ export class Navbar {
   readonly LogOut = LogOut;
   readonly Menu = Menu;
   readonly X = X;
+  readonly Shield = Shield;
+  readonly Database = Database;
+  readonly UserPen = UserPen;
+  readonly Goal = Goal;
 
   @Input() isOpen = false;
   @Input() currentRoute = '/dashboard';
@@ -52,7 +60,11 @@ export class Navbar {
     { icon: Wallet, label: 'Accounts', href: '/dashboard/accounts' },
     { icon: CreditCard, label: 'Transactions', href: '/transactions' },
     { icon: PieChart, label: 'Budget', href: '/dashboard/budget' },
-    { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+    { icon: Settings, label: 'Preferences', href: '/user-preference' },
+    { icon: Shield, label: 'Security', href: '/user-security' },
+    { icon: Database, label: 'Data Management', href: '/data-management'},
+    { icon: UserPen, label: 'Profile', href: '/user-profile' },
+    { icon: Goal, label: 'Goal', href: '/savings-goals'}
   ];
 
   constructor(private router: Router) {}

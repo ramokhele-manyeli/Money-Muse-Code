@@ -1,0 +1,226 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">
+        {{ transaction ? 'Edit Transaction' : 'Add New Transaction' }}
+      </h2>
+      <button class="close-button" (click)="onClose()">
+        <lucide-icon [name]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="modal-body">
+      <!-- Transaction Type Toggle -->
+      <div class="form-group">
+        <label class="form-label">Transaction Type</label>
+        <div class="type-toggle">
+          <button
+            type="button"
+            class="type-button"
+            [class.active]="transactionType === 'income'"
+            [class.income]="transactionType === 'income'"
+            (click)="onTransactionTypeChange('income')">
+            Income
+          </button>
+          <button
+            type="button"
+            class="type-button"
+            [class.active]="transactionType === 'expense'"
+            [class.expense]="transactionType === 'expense'"
+            (click)="onTransactionTypeChange('expense')">
+            Expense
+          </button>
+        </div>
+      </div>
+
+      <!-- Amount Input -->
+      <div class="form-group">
+        <label for="amount" class="form-label">
+          <span>Amount</span>
+          <span *ngIf="touched.amount" class="validation-indicator">
+            <span *ngIf="isAmountValid" class="valid-indicator">
+              <lucide-icon [name]="Check" [size]="12"></lucide-icon>
+              Valid
+            </span>
+            <span *ngIf="!isAmountValid" class="invalid-indicator">
+              Required
+            </span>
+          </span>
+        </label>
+        <div class="amount-input-container">
+          <span class="currency-symbol">$</span>
+          <input
+            id="amount"
+            type="number"
+            step="0.01"
+            placeholder="0.00"
+            [(ngModel)]="amount"
+            (blur)="onAmountBlur()"
+            class="amount-input"
+            [class.valid]="touched.amount && isAmountValid"
+            [class.invalid]="touched.amount && !isAmountValid"
+          />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description" class="form-label">
+          <span>Description</span>
+          <span *ngIf="touched.description" class="validation-indicator">
+            <span *ngIf="isDescriptionValid" class="valid-indicator">
+              <lucide-icon [name]="Check" [size]="12"></lucide-icon>
+              Valid
+            </span>
+            <span *ngIf="!isDescriptionValid" class="invalid-indicator">
+              Required
+            </span>
+          </span>
+        </label>
+        <textarea
+          id="description"
+          placeholder="Enter transaction description..."
+          [(ngModel)]="description"
+          (blur)="onDescriptionBlur()"
+          class="description-input"
+          [class.valid]="touched.description && isDescriptionValid"
+          [class.invalid]="touched.description && !isDescriptionValid"
+          rows="3">
+        </textarea>
+      </div>
+
+      <!-- Category -->
+      <div class="form-group">
+        <label for="category" class="form-label">
+          <span>Category</span>
+          <span *ngIf="touched.category" class="validation-indicator">
+            <span *ngIf="isCategoryValid" class="valid-indicator">
+              <lucide-icon [name]="Check" [size]="12"></lucide-icon>
+              Valid
+            </span>
+            <span *ngIf="!isCategoryValid" class="invalid-indicator">
+              Required
+            </span>
+          </span>
+        </label>
+        <select
+          id="category"
+          [(ngModel)]="category"
+          (change)="onCategoryChange(category)"
+          class="category-select"
+          [class.valid]="touched.category && isCategoryValid"
+          [class.invalid]="touched.category && !isCategoryValid">
+          <option value="">Select a category</option>
+          <option *ngFor="let cat of categories" [value]="cat.value">
+            {{ cat.label }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Date Picker -->
+      <div class="form-group">
+        <label for="date" class="form-label">Date</label>
+        <div class="date-input-container">
+          <lucide-icon [name]="CalendarIcon" [size]="16" class="date-icon"></lucide-icon>
+          <input
+            id="date"
+            type="date"
+            [(ngModel)]="date"
+            class="date-input"
+          />
+        </div>
+      </div>
+
+      <!-- Recurring Checkbox -->
+      <div class="form-group">
+        <div class="checkbox-container">
+          <input
+            id="recurring"
+            type="checkbox"
+            [(ngModel)]="isRecurring"
+            class="checkbox-input"
+          />
+          <label for="recurring" class="checkbox-label">
+            Add to recurring transactions
+          </label>
+        </div>
+      </div>
+
+      <!-- Receipt Upload -->
+      <div class="form-group">
+        <label class="form-label">Attach Receipt (Optional)</label>
+        <div
+          class="upload-area"
+          [class.dragging]="isDragging"
+          [class.has-file]="receipt"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave()"
+          (drop)="onDrop($event)">
+          
+          <div *ngIf="receipt; else uploadPrompt" class="receipt-preview">
+            <div class="receipt-success">
+              <lucide-icon [name]="Check" [size]="20" class="success-icon"></lucide-icon>
+              <span class="success-text">Receipt attached</span>
+            </div>
+            <div class="receipt-details">
+              <div class="receipt-thumbnail">
+                <img [src]="getReceiptUrl()" alt="Receipt preview" class="receipt-image" />
+              </div>
+              <div class="receipt-info">
+                <p class="receipt-name">{{ receipt.name }}</p>
+                <p class="receipt-size">{{ getReceiptSizeKB() }} KB</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="remove-button"
+              (click)="removeReceipt()">
+              <lucide-icon [name]="X" [size]="16"></lucide-icon>
+              Remove
+            </button>
+          </div>
+
+          <ng-template #uploadPrompt>
+            <div class="upload-prompt">
+              <div class="upload-icon-container">
+                <lucide-icon [name]="Upload" [size]="24" class="upload-icon"></lucide-icon>
+              </div>
+              <div class="upload-text">
+                <p class="upload-primary">Drag and drop your receipt here</p>
+                <p class="upload-secondary">or click to browse</p>
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onFileChange($event)"
+                class="file-input"
+                id="receipt-upload"
+              />
+              <button type="button" class="browse-button">
+                <label for="receipt-upload" class="browse-label">
+                  Browse Files
+                </label>
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="button" class="cancel-button" (click)="onClose()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="save-button"
+        [disabled]="!isFormValid"
+        (click)="onSave()">
+        {{ transaction ? 'Update Transaction' : 'Save Transaction' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="user-preferences-layout">
+  <!-- Navbar -->
+  <app-navbar 
+    [isOpen]="isMobileMenuOpen"
+    [currentRoute]="currentRoute"
+    (toggleMenu)="onToggleMobileMenu()"
+    (closeMenu)="onCloseMobileMenu()"
+    (navigateToRoute)="onNavigate($event)">
+  </app-navbar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <!-- Header -->
+      <div class="page-header">
+        <h1 class="page-title">Preferences</h1>
+        <p class="page-subtitle">Customize your app experience</p>
+      </div>
+
+      <!-- Preferences Card -->
+      <div class="preferences-card">
+        <h2 class="section-title">Preferences</h2>
+        
+        <div class="preferences-sections">
+          <!-- Currency Section -->
+          <div class="preference-section">
+            <div class="section-header">
+              <div class="icon-container">
+                <lucide-icon [name]="DollarSign" [size]="20" class="section-icon"></lucide-icon>
+              </div>
+              <div class="header-content">
+                <h3 class="section-heading">Currency</h3>
+                <p class="section-description">
+                  Choose your preferred currency for displaying amounts
+                </p>
+              </div>
+            </div>
+
+            <div class="form-content">
+              <div class="form-group">
+                <label for="currency" class="form-label">Currency</label>
+                <app-custom-select
+                  [options]="currencySelectOptions"
+                  [value]="currency"
+                  placeholder="Select currency"
+                  (valueChange)="onCurrencyChange($event)"
+                  class="currency-select">
+                </app-custom-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Date Format Section -->
+          <div class="preference-section">
+            <div class="section-header">
+              <div class="icon-container">
+                <lucide-icon [name]="Calendar" [size]="20" class="section-icon"></lucide-icon>
+              </div>
+              <div class="header-content">
+                <h3 class="section-heading">Date Format</h3>
+                <p class="section-description">
+                  Choose how dates are displayed throughout the app
+                </p>
+              </div>
+            </div>
+
+            <div class="form-content">
+              <div class="form-group">
+                <label for="dateFormat" class="form-label">Date Format</label>
+                <app-custom-select
+                  [options]="dateFormatSelectOptions"
+                  [value]="dateFormat"
+                  placeholder="Select date format"
+                  (valueChange)="onDateFormatChange($event)"
+                  class="date-format-select">
+                </app-custom-select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dark Mode Section -->
+          <div class="preference-section">
+            <div class="dark-mode-toggle">
+              <div class="toggle-content">
+                <div class="icon-container">
+                  <lucide-icon [name]="Moon" [size]="20" class="section-icon"></lucide-icon>
+                </div>
+                <div class="toggle-info">
+                  <label for="darkMode" class="toggle-label">
+                    Dark Mode
+                  </label>
+                  <p class="toggle-description">
+                    Enable dark theme for reduced eye strain
+                  </p>
+                </div>
+              </div>
+              <div class="toggle-switch">
+                <input
+                  id="darkMode"
+                  type="checkbox"
+                  [(ngModel)]="darkMode"
+                  (change)="onDarkModeToggle()"
+                  class="switch-input"
+                />
+                <label for="darkMode" class="switch-label">
+                  <span class="switch-handle"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

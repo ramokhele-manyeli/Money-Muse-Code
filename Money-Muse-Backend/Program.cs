@@ -108,6 +108,7 @@ builder.Services.AddSwaggerGen(c =>
 // Register application services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // CORS Configuration - Flexible for local development, secure for production
 builder.Services.AddCors(options =>
