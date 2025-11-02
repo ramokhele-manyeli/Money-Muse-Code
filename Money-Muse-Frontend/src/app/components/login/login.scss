@@ -1,0 +1,98 @@
+@import '../../shared/form-styles.scss';
+
+.login-form {
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #1f2937;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: -0.025em;
+    }
+
+    p {
+      color: #64748b;
+      font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+    }
+  }
+
+  .forgot-link {
+    color: #059669;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .remember-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: #374151;
+    font-family: 'Inter', sans-serif;
+  }
+
+  // Direct button styling - no inheritance issues
+  button {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    border: none;
+
+    &[type="submit"] {
+      background-color: #059669 !important;
+      color: white !important;
+
+      &:hover {
+        background-color: #047857 !important;
+      }
+
+      &:disabled {
+        background-color: #9ca3af !important;
+        cursor: not-allowed;
+      }
+    }
+
+    &[type="button"] {
+      background-color: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+
+      &:hover {
+        background-color: #f9fafb;
+      }
+
+      // Add colored icons with spacing
+      i {
+        margin-right: 1rem; // Add the spacing here!
+
+        &.fa-google {
+          color: #ea4335;
+        }
+
+        &.fa-github {
+          color: #333;
+        }
+      }
+    }
+  }
+}

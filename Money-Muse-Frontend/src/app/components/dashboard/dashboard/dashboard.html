@@ -1,0 +1,127 @@
+<div class="dashboard-layout">
+  <!-- Enhanced Navbar Component -->
+  <app-navbar 
+    [isOpen]="isMobileMenuOpen"
+    [currentRoute]="currentRoute"
+    (toggleMenu)="onToggleMobileMenu()"
+    (closeMenu)="onCloseMobileMenu()"
+    (navigateToRoute)="onNavigate($event)">
+  </app-navbar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <!-- Header -->
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Welcome back! Here's your financial overview.</p>
+      </div>
+
+      <!-- Enhanced Metrics Cards -->
+      <div class="metrics-grid">
+        <div class="metric-card" *ngFor="let metric of metricsData; trackBy: trackByMetricId">
+          <div class="metric-header">
+            <span class="metric-label">{{ metric.label }}</span>
+            <lucide-icon [name]="metric.icon" [size]="18" class="metric-icon"></lucide-icon>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value">{{ metric.value }}</div>
+            <p class="metric-change" [class.positive]="metric.changeType === 'positive'" [class.negative]="metric.changeType === 'negative'">
+              <lucide-icon [name]="ArrowUpRight" [size]="14"></lucide-icon>
+              <span>{{ metric.change }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-grid">
+        <!-- Income vs Expenses Chart -->
+        <div class="chart-card income-expense-chart">
+          <div class="card-header">
+            <h3 class="card-title">Income vs Expenses</h3>
+            <p class="card-subtitle">Last 6 months overview</p>
+          </div>
+          <div class="card-content">
+            <!-- Placeholder for chart - integrate with Angular chart library -->
+            <div class="chart-placeholder">
+              <p class="chart-placeholder-text">Income vs Expenses Chart</p>
+              <p class="chart-placeholder-hint">Integrate with ngx-charts, Chart.js, or another Angular chart library</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spending by Category -->
+        <div class="chart-card category-chart">
+          <div class="card-header">
+            <h3 class="card-title">Spending by Category</h3>
+            <p class="card-subtitle">This month</p>
+          </div>
+          <div class="card-content">
+            <!-- Pie Chart Placeholder -->
+            <div class="pie-chart-placeholder">
+              <svg viewBox="0 0 200 200" class="simple-pie">
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#e5e7eb" stroke-width="40" />
+                <circle 
+                  *ngFor="let cat of categoryData; let i = index"
+                  cx="100" 
+                  cy="100" 
+                  r="80" 
+                  fill="none" 
+                  [attr.stroke]="cat.color" 
+                  stroke-width="40"
+                  [attr.stroke-dasharray]="(cat.value / getTotalCategorySpending() * 502.65) + ' 502.65'"
+                  [attr.transform]="getCategoryRotation(i)"
+                />
+              </svg>
+            </div>
+            
+            <div class="category-legend">
+              <div *ngFor="let category of categoryData" class="legend-item">
+                <div class="legend-info">
+                  <div class="legend-color" [style.background-color]="category.color"></div>
+                  <span class="legend-label">{{ category.name }}</span>
+                </div>
+                <span class="legend-value">${{ category.value }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="transactions-card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Transactions</h3>
+          <p class="card-subtitle">Your latest financial activity</p>
+        </div>
+        <div class="card-content">
+          <div class="transactions-list">
+            <div *ngFor="let transaction of recentTransactions" class="transaction-item">
+              <div class="transaction-info">
+                <div 
+                  class="transaction-icon"
+                  [class.income]="transaction.type === 'income'"
+                  [class.expense]="transaction.type === 'expense'"
+                >
+                  <lucide-icon [name]="transaction.icon" [size]="20"></lucide-icon>
+                </div>
+                <div class="transaction-details">
+                  <p class="transaction-description">{{ transaction.description }}</p>
+                  <p class="transaction-date">{{ transaction.date }}</p>
+                </div>
+              </div>
+              <div 
+                class="transaction-amount"
+                [class.income]="transaction.type === 'income'"
+                [class.expense]="transaction.type === 'expense'"
+              >
+                {{ formatAmount(transaction.amount) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

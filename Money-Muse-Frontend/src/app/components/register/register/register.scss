@@ -1,0 +1,89 @@
+@import '../../../shared/form-styles.scss';
+
+.register-form {
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+      color: #1f2937;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    p {
+      color: #64748b;
+      font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+    }
+  }
+
+  .form-group {
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #374151;
+      font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+    }
+  }
+
+  // Nuclear option - force button visibility
+  button[type="submit"] {
+    display: block !important;
+    width: 100% !important;
+    height: 44px !important;
+    background-color: #059669 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
+    cursor: pointer !important;
+    margin: 1rem 0 !important;
+    padding: 0.75rem !important;
+    
+    &:hover {
+      background-color: #047857 !important;
+    }
+  }
+
+  // All other buttons
+  button:not([type="submit"]) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    padding: 0.75rem 1rem !important;
+    background-color: white !important;
+    border: 1px solid #d1d5db !important;
+    color: #374151 !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
+    cursor: pointer !important;
+
+    &:hover {
+      background-color: #f9fafb !important;
+    }
+
+    // Add colored icons with spacing - FIXED INDENTATION
+    i {
+      margin-right: 1rem;
+
+      &.fa-google {
+        color: #ea4335;
+      }
+
+      &.fa-github {
+        color: #333;
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Left Side - Visual Panel (moved to left like your example) -->
+    <div class="visual-side">
+      <img src="assets/images/finance-image.jpg" alt="Financial planning illustration" class="finance-image">
+      <div class="content">
+        <div class="text-content">
+          <h2>Take control of your financial future</h2>
+          <p>Track expenses, manage budgets, and achieve your financial goals with Money-Muse.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Form Panel -->
+    <div class="form-side">
+      <!-- Mobile logo - only shows on small screens -->
+      <div class="mobile-logo" *ngIf="isMobile()">
+        <div class="icon-box">
+          <i class="fas fa-sparkles"></i>
+        </div>
+      </div>
+
+      <div class="form-container">
+        <!-- Brand - shows on desktop only -->
+        <div class="brand" *ngIf="!isMobile()">
+          <div class="icon-box">
+            <i class="fas fa-sparkles"></i>
+          </div>
+          <h1>Money-Muse</h1>
+        </div>
+
+        <div class="tab-switcher">
+          <button
+            [class.btn-tab-active]="mode === 'login'"
+            class="btn-tab"
+            (click)="mode = 'login'">Login</button>
+          <button
+            [class.btn-tab-active]="mode === 'register'"
+            class="btn-tab"
+            (click)="mode = 'register'">Sign Up</button>
+        </div>
+
+        <app-login *ngIf="mode === 'login'"></app-login>
+        <app-register *ngIf="mode === 'register'"></app-register>
+
+        <p class="terms">
+          By continuing, you agree to our
+          <a href="#">Terms of Service</a> and
+          <a href="#" >Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

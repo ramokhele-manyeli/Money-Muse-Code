@@ -107,6 +107,50 @@ builder.Services.AddSwaggerGen(c =>
 
 // Register application services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<EmailService>();
+
+// CORS Configuration - Flexible for local development, secure for production
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev", corsBuilder =>
+    {
+        corsBuilder
+            .SetIsOriginAllowed(origin =>
+            {
+                if (string.IsNullOrEmpty(origin)) return false;
+
+                try
+                {
+                    var uri = new Uri(origin);
+
+                    // Development: Allow any localhost/127.0.0.1 on any port with http or https
+                    if (builder.Environment.IsDevelopment())
+                    {
+                        return uri.Host == "localhost" ||
+                               uri.Host == "127.0.0.1" ||
+                               uri.Host == "::1"; // IPv6 localhost
+                    }
+
+                    // Production: Only allow specific trusted origins
+                    var allowedHosts = new[]
+                    {
+                        "zealous-desert-00ba4c703.2.azurestaticapps.net",
+                        "skillsync-api-fwdydag0dcgpf8eq.southafricanorth-01.azurewebsites.net"
+                    };
+
+                    return allowedHosts.Contains(uri.Host, StringComparer.OrdinalIgnoreCase);
+                }
+                catch
+                {
+                    return false; // Invalid URI format
+                }
+            })
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithExposedHeaders("WWW-Authenticate");
+    });
+});
 
 // Build the app
 var app = builder.Build();
@@ -139,6 +183,30 @@ if (app.Environment.IsDevelopment())
 {
     app.MapGet("/", () => Results.Redirect("/swagger"));
 }
+
+// Open Swagger in browser on development
+if (app.Environment.IsDevelopment())
+{
+    var swaggerUrl = "https://localhost:7028/swagger"; // Adjust port if needed
+    try
+    {
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = swaggerUrl,
+            UseShellExecute = true
+        });
+    }
+    catch
+    {
+        // Ignore errors (e.g., if not running on Windows)
+    }
+}
+
+var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST");
+var smtpPort = Environment.GetEnvironmentVariable("SMTP_PORT");
+var smtpUser = Environment.GetEnvironmentVariable("SMTP_USERNAME");
+var smtpPass = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+var smtpFrom = Environment.GetEnvironmentVariable("SMTP_FROM");
 
 // Run the app
 app.Run();
