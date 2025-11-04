@@ -1,0 +1,91 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">
+        {{ isEditMode ? 'Edit Budget Category' : 'Create New Budget Category' }}
+      </h2>
+      <button class="close-button" (click)="closeModal()">
+        <lucide-icon [name]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form (ngSubmit)="onSave()" #categoryForm="ngForm">
+        <div class="form-group">
+          <label class="form-label">Category Icon</label>
+          <div class="icon-grid">
+            <button 
+              type="button" 
+              class="icon-option" 
+              *ngFor="let icon of availableIcons" 
+              (click)="selectIcon(icon.value)" 
+              [class.selected]="categoryData.icon === icon.value">
+              <span class="icon-emoji">{{ icon.emoji }}</span>
+              <span class="icon-label">{{ icon.label }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="category-name" class="form-label">Category Name</label>
+          <input 
+            id="category-name" 
+            name="name" 
+            [(ngModel)]="categoryData.name" 
+            class="form-input" 
+            placeholder="e.g., Healthcare"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="monthly-budget" class="form-label">Monthly Budget ($)</label>
+          <input 
+            id="monthly-budget" 
+            name="budget" 
+            type="number" 
+            [(ngModel)]="categoryData.budget" 
+            class="form-input" 
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="amount-spent" class="form-label">Amount Spent ($)</label>
+          <input 
+            id="amount-spent" 
+            name="spent" 
+            type="number" 
+            [(ngModel)]="categoryData.spent" 
+            class="form-input" 
+            placeholder="0.00"
+            min="0"
+            step="0.01" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Category Color</label>
+          <div class="color-grid">
+            <button 
+              *ngFor="let color of availableColors" 
+              type="button" 
+              class="color-option" 
+              [style.backgroundColor]="getColorPreview(color)" 
+              [class.selected]="categoryData.color === color" 
+              (click)="selectColor(color)">
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="cancel-button" (click)="closeModal()">Cancel</button>
+      <button type="button" class="save-button" (click)="onSave()">
+        <lucide-icon [name]="Check" [size]="14"></lucide-icon> 
+        {{ isEditMode ? 'Save Changes' : 'Create Category' }}
+      </button>
+    </div>
+  </div>
+</div>

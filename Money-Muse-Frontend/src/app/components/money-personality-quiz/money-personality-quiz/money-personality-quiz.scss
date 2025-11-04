@@ -1,0 +1,474 @@
+// Quiz Layout - Match budget component structure
+.quiz-layout {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 0;
+
+  @media (min-width: 768px) {
+    margin-left: 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    margin-left: 16rem;
+  }
+}
+
+.content-wrapper {
+  padding: 2rem;
+  padding-top: 5rem;
+
+  @media (min-width: 768px) {
+    padding: 2rem;
+    padding-top: 2rem;
+  }
+}
+
+.quiz-container {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+// Page Header (matches budget component)
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+
+  @media (min-width: 1024px) {
+    font-size: 2.5rem;
+  }
+}
+
+.page-subtitle {
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+// Results View Styles
+.results-view {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.personality-badge {
+  display: inline-block;
+  padding: 2rem;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.personality-emoji {
+  font-size: 4rem;
+}
+
+.personality-title {
+  font-family: 'DM Sans', sans-serif; // Match budget page-title
+  font-size: 2rem;
+  font-weight: 600; // Match budget
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+
+  @media (min-width: 1024px) {
+    font-size: 2.5rem; // Match budget responsive sizing
+  }
+}
+
+.personality-description {
+  font-size: 1rem; // Match budget page-subtitle
+  color: #6b7280;
+  max-width: 32rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.results-grid {
+  display: grid;
+  gap: 1.5rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.result-card {
+  background: #ffffff; // Match budget summary-card
+  border: 2px solid #e5e7eb; // Match budget
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Match budget
+}
+
+.strengths-card {
+  border-color: #bbf7d0;
+  background-color: #f0fdf4;
+  
+  .result-card-title {
+    color: #14532d;
+  }
+  
+  .result-item {
+    color: #166534;
+    
+    .checkmark {
+      color: #16a34a;
+    }
+  }
+}
+
+.weaknesses-card {
+  border-color: #fed7aa;
+  background-color: #fff7ed;
+  
+  .result-card-title {
+    color: #9a3412;
+  }
+  
+  .result-item {
+    color: #c2410c;
+    
+    .warning-mark {
+      color: #ea580c;
+    }
+  }
+}
+
+.result-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem; // Match budget summary-title
+  font-weight: 600; // Match budget
+  margin-bottom: 1rem;
+  color: #374151; // Match budget summary-title
+}
+
+.result-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.result-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  
+  .checkmark,
+  .warning-mark {
+    font-weight: 700;
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+  }
+}
+
+.tips-card {
+  background: #ffffff; // Match budget
+  border: 2px solid #bfdbfe;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  background-color: #eff6ff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Match budget
+}
+
+.tips-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem; // Match budget
+  font-weight: 600; // Match budget
+  color: #1e40af;
+  margin-bottom: 1rem;
+}
+
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: #1e40af;
+  
+  .tip-number {
+    font-weight: 700;
+    color: #2563eb;
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+}
+
+.share-btn,
+.retry-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem; // Match budget buttons
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600; // Match budget buttons
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 3rem;
+}
+
+.share-btn {
+  background: #059669; // Match budget primary color
+  color: white;
+  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.3); // Match budget
+  
+  &:hover {
+    background: #047857; // Match budget hover
+    transform: translateY(-1px); // Match budget hover
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); // Match budget hover
+  }
+}
+
+.retry-btn {
+  background: white;
+  color: #374151;
+  border: 2px solid #d1d5db;
+  
+  &:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
+  }
+}
+
+// Quiz View Styles
+.quiz-view {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.progress-section {
+  margin-bottom: 2rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.progress-text,
+.progress-percent {
+  font-size: 0.875rem; // Match budget progress
+  font-weight: 500; // Match budget progress
+  color: #6b7280; // Match budget progress
+}
+
+.progress-bar {
+  height: 0.75rem; // Match budget progress-bar-container
+  background: #e5e7eb; // Match budget
+  border-radius: 9999px; // Match budget
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #059669; // Match budget primary color instead of gradient
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.question-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.question-title {
+  font-family: 'DM Sans', sans-serif; // Match budget page-title
+  font-size: 1.5rem; // Match budget categories-title
+  font-weight: 700; // Match budget
+  color: #1f2937; // Match budget
+  margin-bottom: 0.5rem;
+  
+  @media (min-width: 768px) {
+    font-size: 1.875rem; // Responsive but consistent with budget style
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 2rem; // Match budget sizing pattern
+  }
+}
+
+.question-subtitle {
+  color: #6b7280; // Match budget
+  font-size: 1rem; // Match budget page-subtitle
+}
+
+.answers-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.answer-card {
+  background: #ffffff; // Match budget
+  border: 2px solid #e5e7eb; // Match budget
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Match budget category-card
+  
+  &:hover {
+    border-color: #059669; // Match budget primary color
+    transform: translateY(-2px); // Match budget hover
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); // Match budget hover
+  }
+  
+  &.selected {
+    border-color: #059669; // Match budget primary color
+    background: #f0fdf4; // Light green to match budget theme
+    transform: translateY(-2px); // Match budget style
+    box-shadow: 0 8px 25px rgba(5, 150, 105, 0.2); // Match budget primary color
+  }
+}
+
+.answer-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem; // Match budget category-card
+}
+
+.answer-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.answer-text {
+  flex: 1;
+  
+  p {
+    font-size: 1.125rem; // Match budget category-name
+    font-weight: 500; // Match budget
+    color: #1f2937; // Match budget
+    margin: 0;
+  }
+}
+
+.answer-radio {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  
+  &.checked {
+    border-color: #059669; // Match budget primary color
+    background: #059669; // Match budget primary color
+    color: white;
+  }
+}
+
+.check-icon {
+  color: white;
+}
+
+// Gradient classes - keep existing gradients for personality badges
+.bg-gradient-from-green-400.to-emerald-600 {
+  background: linear-gradient(135deg, #4ade80, #059669);
+}
+
+.bg-gradient-from-blue-400.to-indigo-600 {
+  background: linear-gradient(135deg, #60a5fa, #4f46e5);
+}
+
+.bg-gradient-from-pink-400.to-rose-600 {
+  background: linear-gradient(135deg, #f472b6, #e11d48);
+}
+
+.bg-gradient-from-purple-400.to-violet-600 {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+}
+
+// Responsive Design - Match budget patterns
+@media (max-width: 767px) {
+  .content-wrapper {
+    padding: 1rem;
+    padding-top: 5rem;
+  }
+
+  .personality-title {
+    font-size: 1.5rem; // Scale down appropriately
+  }
+  
+  .personality-emoji {
+    font-size: 3rem;
+  }
+  
+  .question-title {
+    font-size: 1.25rem; // Match budget mobile scaling
+  }
+  
+  .answer-content {
+    padding: 1rem; // Slightly reduce for mobile like budget
+    gap: 0.75rem;
+  }
+  
+  .answer-icon {
+    font-size: 2rem;
+  }
+  
+  .answer-text p {
+    font-size: 1rem;
+  }
+  
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .share-btn,
+  .retry-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

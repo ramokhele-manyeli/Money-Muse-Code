@@ -255,6 +255,9 @@
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  // Ensure proper stacking context
+  position: relative;
+  z-index: 10;
 }
 
 .filter-grid {
@@ -283,6 +286,12 @@
   width: 100%;
   min-width: 0;
   flex-shrink: 0;
+  // Ensure each filter has its own stacking context
+  z-index: 1;
+  
+  &:nth-child(1) { z-index: 13; } // Search has highest priority
+  &:nth-child(2) { z-index: 12; } // Category
+  &:nth-child(3) { z-index: 11; } // Type
 }
 
 .search-container {

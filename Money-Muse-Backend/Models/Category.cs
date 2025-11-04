@@ -31,11 +31,15 @@ namespace Money_Muse_Backend.Models
         [MaxLength(20)]
         public string ColorCode { get; set; } = string.Empty;
 
+        [MaxLength(500)]
+        public string? Description { get; set; } = string.Empty;
+
         [Required]
         public CategoryType Type { get; set; }
 
         public bool IsDefault { get; set; } = false;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

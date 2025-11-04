@@ -1,0 +1,178 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">
+        {{ category ? 'Edit Category' : 'Create New Category' }}
+      </h2>
+      <button class="close-button" (click)="onClose()">
+        <lucide-icon [name]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="modal-body">
+      <p class="modal-subtitle">
+        {{ category ? 'Update the category details below' : 'Create a new custom category for your transactions' }}
+      </p>
+
+      <!-- Category Name -->
+      <div class="form-group">
+        <label for="categoryName" class="form-label">
+          <span>Category Name</span>
+          <span *ngIf="touched.name" class="validation-indicator">
+            <span *ngIf="isNameValid" class="valid-indicator">
+              <lucide-icon [name]="Check" [size]="12"></lucide-icon>
+              Valid
+            </span>
+            <span *ngIf="!isNameValid" class="invalid-indicator">
+              Required
+            </span>
+          </span>
+        </label>
+        <div class="input-container">
+          <input
+            id="categoryName"
+            type="text"
+            [(ngModel)]="formData.name"
+            (blur)="onNameBlur()"
+            placeholder="e.g., Groceries, Gym Membership"
+            class="form-input"
+            [class.error]="touched.name && !isNameValid"
+            [class.valid]="touched.name && isNameValid"
+          />
+          <div *ngIf="touched.name && isNameValid" class="input-check">✓</div>
+        </div>
+        <p *ngIf="touched.name && !isNameValid" class="error-text">Category name is required</p>
+      </div>
+
+      <!-- Icon Picker -->
+      <div class="form-group">
+        <label class="form-label">Icon</label>
+        <div class="icon-grid">
+          <button
+            *ngFor="let icon of iconOptions"
+            type="button"
+            (click)="selectIcon(icon)"
+            class="icon-option"
+            [class.selected]="formData.icon === icon">
+            {{ icon }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Color Picker -->
+      <div class="form-group">
+        <label class="form-label">Background Color</label>
+        <div class="color-grid">
+          <button
+            *ngFor="let color of colorOptions"
+            type="button"
+            (click)="selectColor(color)"
+            class="color-option"
+            [class.selected]="formData.colorCode === color"
+            [style.background-color]="color">
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Type -->
+      <div class="form-group">
+        <label class="form-label">Category Type</label>
+        <div class="type-grid">
+          <div class="type-option">
+            <input 
+              type="radio" 
+              id="income" 
+              name="type" 
+              value="Income"
+              [checked]="formData.type === 'Income'"
+              (change)="setType('Income')"
+              class="type-radio">
+            <label for="income" class="type-label">
+              <div class="type-icon">💰</div>
+              <span>Income</span>
+            </label>
+          </div>
+          <div class="type-option">
+            <input 
+              type="radio" 
+              id="expense" 
+              name="type" 
+              value="Expense"
+              [checked]="formData.type === 'Expense'"
+              (change)="setType('Expense')"
+              class="type-radio">
+            <label for="expense" class="type-label">
+              <div class="type-icon">💸</div>
+              <span>Expense</span>
+            </label>
+          </div>
+          <div class="type-option">
+            <input 
+              type="radio" 
+              id="both" 
+              name="type" 
+              value="Both"
+              [checked]="formData.type === 'Both'"
+              (change)="setType('Both')"
+              class="type-radio">
+            <label for="both" class="type-label">
+              <div class="type-icon">💳</div>
+              <span>Both</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description" class="form-label">Description (Optional)</label>
+        <textarea
+          id="description"
+          [(ngModel)]="formData.description"
+          placeholder="Add a description for this category..."
+          class="form-textarea"
+          rows="3">
+        </textarea>
+      </div>
+
+      <!-- Preview -->
+      <div class="form-group">
+        <label class="form-label">Preview</label>
+        <div class="preview-card">
+          <div class="preview-content">
+            <div 
+              class="preview-icon"
+              [style.background-color]="getCategoryBackgroundColor(formData.colorCode)">
+              {{ formData.icon }}
+            </div>
+            <div class="preview-info">
+              <div class="preview-name">{{ formData.name || 'Category Name' }}</div>
+              <span class="preview-type" [ngClass]="getCategoryTypeClass(formData.type)">
+                {{ formData.type }}
+              </span>
+            </div>
+          </div>
+          <p *ngIf="formData.description.trim()" class="preview-description">
+            {{ formData.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="button" class="cancel-button" (click)="onClose()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="save-button"
+        [disabled]="!isFormValid"
+        (click)="onSave()">
+        {{ category ? 'Update Category' : 'Create Category' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -24,7 +24,18 @@
     <a href="#" class="forgot-link">Forgot password?</a>
   </div>
 
-  <button type="submit" class="btn btn-primary w-full">Sign In</button>
+  <!-- Error message display -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Updated sign-in button with spinner -->
+  <button type="submit" class="btn btn-primary w-full" [disabled]="isLoading || loginForm.invalid">
+    <span *ngIf="isLoading" class="spinner"></span>
+    <span [class.loading-text]="isLoading">
+      {{ isLoading ? 'Signing in...' : 'Sign In' }}
+    </span>
+  </button>
 
   <div class="divider">
     <span>Or continue with</span>

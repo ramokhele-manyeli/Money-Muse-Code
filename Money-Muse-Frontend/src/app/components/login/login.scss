@@ -43,6 +43,38 @@
     font-family: 'Inter', sans-serif;
   }
 
+  .error-message {
+    padding: 0.75rem;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    color: #dc2626;
+    font-size: 0.875rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  // Spinner animation
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 0.5rem;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-text {
+    margin-left: 0.25rem;
+  }
+
   // Direct button styling - no inheritance issues
   button {
     display: flex !important;
@@ -62,13 +94,14 @@
       background-color: #059669 !important;
       color: white !important;
 
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: #047857 !important;
       }
 
       &:disabled {
         background-color: #9ca3af !important;
         cursor: not-allowed;
+        opacity: 0.7;
       }
     }
 
@@ -83,7 +116,7 @@
 
       // Add colored icons with spacing
       i {
-        margin-right: 1rem; // Add the spacing here!
+        margin-right: 1rem;
 
         &.fa-google {
           color: #ea4335;

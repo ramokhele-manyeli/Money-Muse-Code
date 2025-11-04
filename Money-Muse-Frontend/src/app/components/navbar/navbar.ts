@@ -15,7 +15,9 @@ import {
   Database,
   Shield,
   UserPen,
-  Goal
+  Goal,
+  BookOpen,
+  Tag
 } from 'lucide-angular';
 
 export interface NavItem {
@@ -46,6 +48,8 @@ export class Navbar {
   readonly Database = Database;
   readonly UserPen = UserPen;
   readonly Goal = Goal;
+  readonly BookOpen = BookOpen;
+  readonly Tag = Tag;
 
   @Input() isOpen = false;
   @Input() currentRoute = '/dashboard';
@@ -55,16 +59,25 @@ export class Navbar {
 
   // Navigation items
   navItems: NavItem[] = [
+    // Core Financial Overview
     { icon: Home, label: 'Dashboard', href: '/dashboard' },
     { icon: TrendingUp, label: 'Analytics', href: '/dashboard/analytics' },
+    
+    // Financial Management
     { icon: Wallet, label: 'Accounts', href: '/dashboard/accounts' },
     { icon: CreditCard, label: 'Transactions', href: '/transactions' },
-    { icon: PieChart, label: 'Budget', href: '/dashboard/budget' },
+    { icon: Tag, label: 'Categories', href: '/category' },
+    { icon: PieChart, label: 'Budget', href: '/budget' },
+    { icon: Goal, label: 'Goals', href: '/savings-goals'},
+    
+    // Learning & Assessment
+    { icon: BookOpen, label: 'Quiz', href: '/money-personality-quiz'},
+    
+    // User Management
+    { icon: UserPen, label: 'Profile', href: '/user-profile' },
     { icon: Settings, label: 'Preferences', href: '/user-preference' },
     { icon: Shield, label: 'Security', href: '/user-security' },
     { icon: Database, label: 'Data Management', href: '/data-management'},
-    { icon: UserPen, label: 'Profile', href: '/user-profile' },
-    { icon: Goal, label: 'Goal', href: '/savings-goals'}
   ];
 
   constructor(private router: Router) {}

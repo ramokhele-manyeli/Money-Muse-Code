@@ -73,6 +73,13 @@
   gap: 0.5rem;
   max-width: 500px; // Increased from 400px to 500px
   width: 100%;
+  position: relative;
+  z-index: 1;
+
+  // Category form group gets higher z-index
+  &:has(.custom-select-wrapper) {
+    z-index: 15;
+  }
 }
 
 .form-label {
@@ -242,26 +249,16 @@
   }
 }
 
-// Category Select
-.category-select {
+// Custom Select Wrapper for validation styling
+.custom-select-wrapper {
   width: 100%;
-  max-width: 100%; // Ensure consistent width
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-    border-color: #059669;
-    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-  }
-
-  &.valid {
+  max-width: 100%;
+  // Add higher z-index to ensure dropdown appears above other elements
+  position: relative;
+  z-index: 20;
+  
+  // Validation styles that will affect the CustomSelect inside
+  &.valid ::ng-deep .select-trigger {
     border-color: #059669;
     
     &:focus {
@@ -269,19 +266,25 @@
     }
   }
 
-  &.invalid {
+  &.invalid ::ng-deep .select-trigger {
     border-color: #dc2626;
     
     &:focus {
       box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
     }
   }
+
+  // Ensure dropdown has even higher z-index when open
+  ::ng-deep .select-dropdown {
+    z-index: 9999 !important;
+  }
 }
 
-// Date Input
+// Also ensure the date input container doesn't interfere
 .date-input-container {
   position: relative;
-  max-width: 500px; // Increased from 400px to 500px
+  max-width: 500px;
+  z-index: 1; // Lower than select dropdown
 }
 
 .date-icon {

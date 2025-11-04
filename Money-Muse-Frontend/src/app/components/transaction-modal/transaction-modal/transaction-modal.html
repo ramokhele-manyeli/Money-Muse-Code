@@ -91,9 +91,9 @@
         </textarea>
       </div>
 
-      <!-- Category -->
+      <!-- Category - Using CustomSelect -->
       <div class="form-group">
-        <label for="category" class="form-label">
+        <label class="form-label">
           <span>Category</span>
           <span *ngIf="touched.category" class="validation-indicator">
             <span *ngIf="isCategoryValid" class="valid-indicator">
@@ -105,18 +105,16 @@
             </span>
           </span>
         </label>
-        <select
-          id="category"
-          [(ngModel)]="category"
-          (change)="onCategoryChange(category)"
-          class="category-select"
-          [class.valid]="touched.category && isCategoryValid"
-          [class.invalid]="touched.category && !isCategoryValid">
-          <option value="">Select a category</option>
-          <option *ngFor="let cat of categories" [value]="cat.value">
-            {{ cat.label }}
-          </option>
-        </select>
+        <div class="custom-select-wrapper" 
+             [class.valid]="touched.category && isCategoryValid"
+             [class.invalid]="touched.category && !isCategoryValid">
+          <app-custom-select
+            [options]="categorySelectOptions"
+            [value]="category"
+            placeholder="Select a category"
+            (valueChange)="onCategoryChange($event)">
+          </app-custom-select>
+        </div>
       </div>
 
       <!-- Date Picker -->

@@ -1,0 +1,133 @@
+<div class="quiz-layout">
+  <!-- Navbar -->
+  <app-navbar 
+    [isOpen]="isMobileMenuOpen"
+    [currentRoute]="currentRoute"
+    (toggleMenu)="onToggleMobileMenu()"
+    (closeMenu)="onCloseMobileMenu()"
+    (navigateToRoute)="onNavigate($event)">
+  </app-navbar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <div class="quiz-container">
+        <!-- Results View -->
+        <div *ngIf="showResults && currentPersonality" class="results-view">
+          <div class="results-header">
+            <div class="personality-badge" [ngClass]="'bg-gradient-' + currentPersonality.color">
+              <span class="personality-emoji">{{ currentPersonality.emoji }}</span>
+            </div>
+            <h2 class="personality-title">{{ currentPersonality.title }}</h2>
+            <p class="personality-description">{{ currentPersonality.description }}</p>
+          </div>
+
+          <div class="results-grid">
+            <!-- Strengths -->
+            <div class="result-card strengths-card">
+              <h3 class="result-card-title">
+                <span class="result-icon">💪</span> Your Strengths
+              </h3>
+              <ul class="result-list">
+                <li *ngFor="let strength of currentPersonality.strengths" class="result-item">
+                  <span class="checkmark">✓</span>
+                  <span>{{ strength }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Weaknesses -->
+            <div class="result-card weaknesses-card">
+              <h3 class="result-card-title">
+                <span class="result-icon">⚠️</span> Watch Out For
+              </h3>
+              <ul class="result-list">
+                <li *ngFor="let weakness of currentPersonality.weaknesses" class="result-item">
+                  <span class="warning-mark">!</span>
+                  <span>{{ weakness }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tips -->
+          <div class="tips-card">
+            <h3 class="tips-title">
+              <span class="result-icon">💡</span> Personalized Money Tips
+            </h3>
+            <ul class="tips-list">
+              <li *ngFor="let tip of currentPersonality.tips; index as i" class="tip-item">
+                <span class="tip-number">{{ i + 1 }}.</span>
+                <span>{{ tip }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="share-btn" (click)="shareResults()">
+              <lucide-icon [name]="Share2" [size]="20"></lucide-icon>
+              Share Results
+            </button>
+            <button class="retry-btn" (click)="resetQuiz()">
+              <lucide-icon [name]="RefreshCw" [size]="20"></lucide-icon>
+              Take Quiz Again
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz View -->
+        <div *ngIf="!showResults" class="quiz-view">
+          <!-- Page Header (matches budget component) -->
+          <div class="page-header">
+            <h1 class="page-title">Money Personality Quiz</h1>
+            <p class="page-subtitle">Discover your financial archetype and get personalized tips</p>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-section">
+            <div class="progress-info">
+              <span class="progress-text">
+                Question {{ currentQuestion + 1 }} of {{ quizQuestions.length }}
+              </span>
+              <span class="progress-percent">{{ Math.round(progress) }}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="progress"></div>
+            </div>
+          </div>
+
+          <!-- Question -->
+          <div class="question-section">
+            <h2 class="question-title">{{ currentQuestionData.question }}</h2>
+            <p class="question-subtitle">Choose the answer that best describes you</p>
+          </div>
+
+          <!-- Answers -->
+          <div class="answers-grid">
+            <div 
+              *ngFor="let answer of currentQuestionData.answers; index as i"
+              class="answer-card"
+              [class.selected]="selectedAnswer === i"
+              (click)="handleAnswer(answer.type, i)">
+              <div class="answer-content">
+                <div class="answer-icon">{{ answer.icon }}</div>
+                <div class="answer-text">
+                  <p>{{ answer.text }}</p>
+                </div>
+                <div class="answer-radio" [class.checked]="selectedAnswer === i">
+                  <lucide-icon 
+                    *ngIf="selectedAnswer === i" 
+                    [name]="Check" 
+                    [size]="16" 
+                    class="check-icon">
+                  </lucide-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

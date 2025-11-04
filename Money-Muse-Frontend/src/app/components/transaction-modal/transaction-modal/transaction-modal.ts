@@ -16,12 +16,18 @@ import {
   Calendar as CalendarIcon,
 } from 'lucide-angular';
 import { Transaction } from '../../../models/transaction';
+import { CustomSelect } from '../../../shared/custom-select/custom-select/custom-select';
 
 interface CategoryOption {
   value: string;
   label: string;
   icon: any;
   color: string;
+}
+
+interface SelectOption {
+  value: string;
+  label: string;
 }
 
 interface TouchedFields {
@@ -33,7 +39,7 @@ interface TouchedFields {
 @Component({
   selector: 'app-transaction-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule, CustomSelect],
   templateUrl: './transaction-modal.html',
   styleUrl: './transaction-modal.scss',
 })
@@ -82,6 +88,14 @@ export class TransactionModal implements OnInit, OnChanges {
     { value: 'shopping', label: 'Shopping', icon: this.ShoppingBag, color: 'text-pink-600' },
     { value: 'other', label: 'Other', icon: this.Smartphone, color: 'text-gray-600' },
   ];
+
+  // Convert categories to select options for CustomSelect
+  get categorySelectOptions(): SelectOption[] {
+    return this.categories.map(cat => ({
+      value: cat.value,
+      label: cat.label
+    }));
+  }
 
   ngOnInit() {
     this.resetForm();

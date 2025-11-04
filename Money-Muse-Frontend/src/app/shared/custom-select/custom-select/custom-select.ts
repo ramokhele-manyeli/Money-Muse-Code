@@ -28,6 +28,9 @@ export class CustomSelect implements OnInit, OnChanges {
   isOpening = false;
   isClosing = false;
   selectedOption: SelectOption | null = null;
+  // Add stronger state management flags
+  private preventStateChange = false;
+  private isInteracting = false;
 
   ngOnInit() {
     this.updateSelectedOption();
@@ -41,31 +44,63 @@ export class CustomSelect implements OnInit, OnChanges {
     this.selectedOption = this.options.find(option => option.value === this.value) || null;
   }
 
-  toggleDropdown() {
+  toggleDropdown(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
+    if (this.preventStateChange || this.isInteracting) return;
+    
+    this.isInteracting = true;
+    
     if (this.isOpen) {
       this.closeDropdown();
     } else {
       this.openDropdown();
     }
-  }
-
-  openDropdown() {
-    this.isOpen = true;
-    this.isOpening = true;
+    
     setTimeout(() => {
-      this.isOpening = false;
-    }, 200);
+      this.isInteracting = false;
+    }, 100);
   }
 
   closeDropdown() {
+    if (this.isClosing || this.preventStateChange) return;
+    
     this.isClosing = true;
+    this.preventStateChange = true;
+    
+    // Force immediate state change instead of relying on animation
+    this.isOpen = false;
+    
     setTimeout(() => {
-      this.isOpen = false;
       this.isClosing = false;
-    }, 150);
+      this.preventStateChange = false;
+    }, 50); // Reduced timeout
   }
 
-  selectOption(option: SelectOption) {
+  openDropdown() {
+    if (this.isOpening || this.preventStateChange || this.isOpen) return;
+    
+    this.isOpening = true;
+    this.preventStateChange = true;
+    this.isOpen = true;
+    
+    setTimeout(() => {
+      this.isOpening = false;
+      this.preventStateChange = false;
+    }, 50); // Reduced timeout
+  }
+
+  selectOption(option: SelectOption, event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
+    if (this.preventStateChange || this.isInteracting) return;
+    
     this.selectedOption = option;
     this.valueChange.emit(option.value);
     this.closeDropdown();
@@ -101,22 +136,15 @@ export class CustomSelect implements OnInit, OnChanges {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
+    if (this.preventStateChange || this.isInteracting) return;
+    
     const target = event.target as HTMLElement;
-    if (!target.closest('.custom-select')) {
+    const selectElement = target.closest('.custom-select');
+    
+    // Only close if clicked outside AND dropdown is actually open
+    if (!selectElement && this.isOpen) {
       this.closeDropdown();
     }
-  }
-
-  @HostListener('focus')
-  onFocus() {
-    this.isFocused = true;
-  }
-
-  @HostListener('blur')
-  onBlur() {
-    setTimeout(() => {
-      this.isFocused = false;
-    }, 100);
   }
 
   trackByValue(index: number, option: SelectOption): string {

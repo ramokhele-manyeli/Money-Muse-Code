@@ -47,15 +47,23 @@ export class Login {
     this.authService.login(loginDto).subscribe({
       next: (result) => {
         console.log('Login successful:', result);
-        // Store the token
         if (result.token) {
           this.authService.setToken(result.token);
+          
+          // Debug: Decode the token
+          try {
+            const payload = JSON.parse(atob(result.token.split('.')[1]));
+            console.log('🔍 Token payload:', payload);
+            console.log('👤 User ID:', payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
+            console.log('👤 Username:', payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
+            console.log('🎭 Role:', payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
+            console.log('📅 Expires:', new Date(payload.exp * 1000));
+            console.log('🏢 Issuer:', payload.iss);
+            console.log('🎯 Audience:', payload.aud);
+          } catch (e) {
+            console.error('❌ Error decoding token:', e);
+          }
         }
-        // Store refresh token if provided
-        if (result.refreshToken) {
-          localStorage.setItem('refreshToken', result.refreshToken);
-        }
-        // Redirect to dashboard
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {

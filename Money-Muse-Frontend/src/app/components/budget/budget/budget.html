@@ -1,0 +1,199 @@
+<div class="budget-layout">
+  <!-- Navbar -->
+  <app-navbar 
+    [isOpen]="isMobileMenuOpen"
+    [currentRoute]="currentRoute"
+    (toggleMenu)="onToggleMobileMenu()"
+    (closeMenu)="onCloseMobileMenu()"
+    (navigateToRoute)="onNavigate($event)">
+  </app-navbar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">Budget Planning</h1>
+        <p class="page-subtitle">Track and manage your monthly spending</p>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading your budget categories...</p>
+      </div>
+
+      <!-- Content (hidden when loading) -->
+      <div *ngIf="!loading">
+        <!-- Top Summary Section -->
+        <div class="summary-grid">
+          <!-- Total Budget Overview -->
+          <div class="summary-card">
+            <h3 class="summary-title">Monthly Budget Overview</h3>
+            <div class="budget-overview">
+              <div class="budget-spent">
+                <p class="budget-label">Total Spent</p>
+                <p class="budget-amount-large">{{ formatCurrency(totalSpent) }}</p>
+              </div>
+              <div class="budget-total">
+                <p class="budget-label">Total Budget</p>
+                <p class="budget-amount-medium">{{ formatCurrency(totalBudget) }}</p>
+              </div>
+            </div>
+            <div class="progress-section">
+              <div class="progress-info">
+                <span class="progress-label">Progress</span>
+                <span class="progress-percentage">{{ totalPercentage.toFixed(1) }}%</span>
+              </div>
+              <div class="progress-bar-container">
+                <div 
+                  class="progress-bar"
+                  [ngClass]="getProgressColor(totalPercentage)"
+                  [style.width.%]="Math.min(totalPercentage, 100)">
+                </div>
+              </div>
+              <div *ngIf="totalPercentage > 100" class="over-budget-alert">
+                Over budget by {{ formatCurrency(totalSpent - totalBudget) }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Budget Health Score -->
+          <div class="summary-card health-card">
+            <h3 class="summary-title">Budget Health Score</h3>
+            <div class="health-content">
+              <div class="health-score-circle">
+                <svg class="health-svg">
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="currentColor"
+                    stroke-width="8"
+                    fill="none"
+                    class="health-bg-circle">
+                  </circle>
+                  <circle
+                    cx="64"
+                    cy="64"
+                    r="56"
+                    stroke="currentColor"
+                    stroke-width="8"
+                    fill="none"
+                    [style.stroke-dasharray]="(healthScore / 100) * 351.86 + ' 351.86'"
+                    [ngClass]="getHealthColor(healthScore)"
+                    class="health-progress-circle">
+                  </circle>
+                </svg>
+                <div class="health-score-text">{{ healthScore }}</div>
+              </div>
+              <div class="health-badge" [ngClass]="getHealthColor(healthScore)">
+                {{ healthLabel }}
+              </div>
+              <p class="health-message">{{ healthMessage }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Budget Categories -->
+        <div class="categories-section">
+          <div class="categories-header">
+            <h2 class="categories-title">Budget Categories</h2>
+            <button class="add-category-btn" (click)="openCreateModal()">
+              <lucide-icon [name]="Plus" [size]="16"></lucide-icon>
+              <span>Add New Category</span>
+            </button>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="categories.length === 0 && !loading" class="empty-state">
+            <div class="empty-content">
+              <lucide-icon [name]="Sparkles" [size]="48" class="empty-icon"></lucide-icon>
+              <h3>No Budget Categories Yet</h3>
+              <p>Get started by creating your first budget category to track your spending.</p>
+            </div>
+          </div>
+
+          <div *ngIf="categories.length > 0" class="categories-grid">
+            <div 
+              *ngFor="let category of categories; trackBy: trackByCategoryId" 
+              class="category-card">
+              <div class="category-header">
+                <div class="category-info">
+                  <div class="category-icon" [ngClass]="category.color">
+                    <lucide-icon [name]="getCategoryIcon(category.icon)" [size]="20"></lucide-icon>
+                  </div>
+                  <div class="category-details">
+                    <h4 class="category-name">{{ category.name }}</h4>
+                    <p class="category-usage">{{ getPercentage(category).toFixed(0) }}% used</p>
+                  </div>
+                </div>
+                <div class="category-actions">
+                  <button 
+                    class="action-btn edit-btn" 
+                    (click)="handleEditCategory(category)">
+                    <lucide-icon [name]="Edit" [size]="16"></lucide-icon>
+                  </button>
+                  <button 
+                    class="action-btn delete-btn" 
+                    (click)="handleDeleteCategory(category.id)">
+                    <lucide-icon [name]="Trash2" [size]="16"></lucide-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div class="category-content">
+                <div class="category-amounts">
+                  <div class="amount-item">
+                    <p class="amount-label">Budget</p>
+                    <p class="amount-value">{{ formatCurrency(category.budget) }}</p>
+                  </div>
+                  <div class="amount-item">
+                    <p class="amount-label">Spent</p>
+                    <p class="amount-value">{{ formatCurrency(category.spent) }}</p>
+                  </div>
+                </div>
+
+                <div class="category-progress">
+                  <div class="category-progress-info">
+                    <span class="remaining-label">Remaining</span>
+                    <span 
+                      class="remaining-amount"
+                      [ngClass]="getRemaining(category) >= 0 ? 'text-green-600' : 'text-red-600'">
+                      {{ formatCurrency(Math.abs(getRemaining(category))) }}
+                      <span *ngIf="getRemaining(category) < 0"> over</span>
+                    </span>
+                  </div>
+                  <div class="category-progress-bar">
+                    <div 
+                      class="category-progress-fill"
+                      [ngClass]="getProgressColor(getPercentage(category))"
+                      [style.width.%]="Math.min(getPercentage(category), 100)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Create Category Modal -->
+  <app-budget-category-modal
+    [isOpen]="isCreateModalOpen"
+    [isEditMode]="false"
+    (close)="onCreateModalClose()"
+    (save)="onCreateModalSave($event)">
+  </app-budget-category-modal>
+
+  <!-- Edit Category Modal -->
+  <app-budget-category-modal
+    [isOpen]="isEditModalOpen"
+    [editingCategory]="editingCategory"
+    [isEditMode]="true"
+    (close)="onEditModalClose()"
+    (save)="onSaveEditCategory($event)">
+  </app-budget-category-modal>
+</div>
